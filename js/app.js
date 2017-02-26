@@ -1,4 +1,4 @@
-var news = [
+const news = [
   {
     author: 'Джеймс Кезиах Делейни',
     text: 'Строит корабельную империю...',
@@ -24,17 +24,21 @@ var Article = React.createClass({
       fullText: React.PropTypes.string.isRequired
     })
   },
+
   getInitialState: function() {
     return {
       visible: false
     };
   },
+
   readMoreHandler: function(e) {
     e.preventDefault();
+
     this.setState({visible: true});
   },
+
   render: function() {
-    var author = this.props.data.author,
+    const author = this.props.data.author,
         text = this.props.data.text,
         fullText = this.props.data.fullText,
         visible = this.state.visible;
@@ -55,6 +59,20 @@ var Article = React.createClass({
 });
 
 const News = React.createClass({
+  propTypes: {
+    data: React.PropTypes.array.isRequired
+  },
+
+  getInitialState: function() {
+    return {
+      counter: 0
+    };
+  },
+
+  onTotalNewsClick: function() {
+    this.setState({counter: ++this.state.counter});
+  },
+
   render: function() {
     const data = this.props.data;
     let newsTemplate;
@@ -74,7 +92,11 @@ const News = React.createClass({
     return (
       <div className='news'>
         {newsTemplate}
-        <strong className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
+        <strong
+          onClick={this.onTotalNewsClick}
+          className={'news__count ' + (data.length > 0 ? '':'none') }>
+          Всего новостей: {data.length}
+        </strong>
       </div>
     );
   }
@@ -94,6 +116,7 @@ const App = React.createClass({
 
 ReactDOM.render(
   <App />,
+
   document.getElementById('root')
 );
 
