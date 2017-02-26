@@ -25,6 +25,10 @@ p {
   display: block;
 }
 
+.input-test {
+  margin: 0 5px 5px 0;
+}
+
 .none {
   display: none;
 }
