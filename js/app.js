@@ -58,33 +58,77 @@ var Article = React.createClass({
   }
 });
 
-const TestInput = React.createClass({
-  componentDidMount: function() {
-    this.refs.inputTest.focus();
+const Add = React.createClass({
+  getInitialState: function() {
+    return {
+      agreeNotChecked: true,
+      authorIsEmpty: true,
+      textIsEmpty: true
+    };
   },
 
-  onClickHandler: function() {
-    alert( this.refs.inputTest.value );
+  componentDidMount: function() {
+    this.refs.author.focus();
+  },
+
+  onCheckRuleClick: function(e) {
+    this.setState({agreeNotChecked: !this.state.agreeNotChecked});
+  },
+
+  onFieldChange: function(fieldName, e) {
+    this.setState({[fieldName]: !e.target.value.trim().length});
+  },
+
+  onBtnClickHandler: function(e) {
+    e.preventDefault();
+
+    let author = this.refs.author.value;
+    let text = this.refs.text.value;
+
+    alert(author + '\n' + text);
   },
 
   render: function() {
+    let agreeNotChecked = this.state.agreeNotChecked,
+        authorIsEmpty = this.state.authorIsEmpty,
+        textIsEmpty = this.state.textIsEmpty;
+
     return (
-      <div className="">
+      <form 
+        className='add cf'
+        onSubmit={this.onBtnClickHandler}
+      >
         <input
-          className='input-test'
-          defaultValue=''
-          ref='inputTest'
           type='text'
-          placeholder='введите значение'
+          className='add__author'
+          onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
+          placeholder='Ваше имя'
+          ref='author'
         />
+        <textarea
+          className='add__text'
+          onChange={this.onFieldChange.bind(this, 'textIsEmpty')}
+          defaultValue=''
+          placeholder='Текст новости'
+          ref='text'
+        />
+        <label className='add__checkrule'>
+          <input
+            defaultChecked={false}
+            onChange={this.onCheckRuleClick}
+            ref='checkrule'
+            type='checkbox'
+          />Я согласен с правилами
+        </label>
         <button
-          className='button'
-          type='button'
-          onClick={this.onClickHandler}
+          className='add__btn'
+          disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
+          ref='button'
+          type='submit'
         >
-          test
+          Показать alert
         </button>
-      </div>
+      </form>
     );
   }
 });
@@ -136,7 +180,7 @@ const App = React.createClass({
       <div className='app'>
         <h3>Новости</h3>
 
-        <TestInput />
+        <Add />
 
         <News data={news}/>
       </div>
