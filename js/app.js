@@ -59,6 +59,10 @@ var Article = React.createClass({
 });
 
 const TestInput = React.createClass({
+  componentDidMount: function() {
+    this.refs.inputTest.focus();
+  },
+
   onClickHandler: function() {
     alert( this.refs.inputTest.value );
   },
